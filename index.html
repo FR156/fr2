@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Front-End Developer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --text: #e8f4df;
+            --background: #121e08;
+            --primary: #b6e791;
+            --secondary: #4b9017;
+            --accent: #7fe830;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+        
+        html, body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            scroll-snap-type: y mandatory;
+            height: 100vh;
+            background-color: var(--background);
+            color: var(--text);
+        }
+        
+        .section {
+            height: 100vh;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            position: relative;
+        }
+        
+        /* Custom scrollbar with theme colors */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a2d0d;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+        
+        /* Animation classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .slide-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .slide-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        /* Navigation dots */
+        .nav-dot {
+            width: 14px;
+            height: 14px;
+            background-color: #2c3e1a;
+            border-radius: 50%;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border: 2px solid transparent;
+        }
+        
+        .nav-dot.active {
+            background-color: var(--accent);
+            transform: scale(1.4);
+            box-shadow: 0 0 10px rgba(127, 232, 48, 0.5);
+        }
+        
+        /* Gradient backgrounds with theme colors */
+        .gradient-bg {
+            background: linear-gradient(135deg, #121e08 0%, #1a2d0d 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gradient-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(75, 144, 23, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(127, 232, 48, 0.1) 0%, transparent 50%);
+        }
+        
+        .gradient-bg-2 {
+            background: linear-gradient(135deg, #0f1a06 0%, #15230a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gradient-bg-2::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: radial-gradient(circle at 30% 30%, rgba(182, 231, 145, 0.08) 0%, transparent 60%),
+                        radial-gradient(circle at 70% 70%, rgba(75, 144, 23, 0.12) 0%, transparent 60%);
+        }
+        
+        .gradient-bg-3 {
+            background: linear-gradient(135deg, #121e08 0%, #0f1907 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gradient-bg-3::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: radial-gradient(circle at 50% 20%, rgba(127, 232, 48, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 10% 80%, rgba(75, 144, 23, 0.15) 0%, transparent 50%);
+        }
+        
+        .gradient-bg-4 {
+            background: linear-gradient(135deg, #0f1a06 0%, #121e08 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gradient-bg-4::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: radial-gradient(circle at 80% 20%, rgba(182, 231, 145, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 20% 60%, rgba(127, 232, 48, 0.08) 0%, transparent 50%);
+        }
+        
+        .gradient-bg-5 {
+            background: linear-gradient(135deg, #121e08 0%, #0c1605 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gradient-bg-5::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: radial-gradient(circle at 40% 40%, rgba(75, 144, 23, 0.15) 0%, transparent 60%),
+                        radial-gradient(circle at 60% 60%, rgba(127, 232, 48, 0.12) 0%, transparent 60%);
+        }
+        
+        /* Theme-specific styling */
+        .text-primary-color {
+            color: var(--primary);
+        }
+        
+        .text-secondary-color {
+            color: var(--secondary);
+        }
+        
+        .text-accent-color {
+            color: var(--accent);
+        }
+        
+        .bg-primary-color {
+            background-color: var(--primary);
+        }
+        
+        .bg-secondary-color {
+            background-color: var(--secondary);
+        }
+        
+        .bg-accent-color {
+            background-color: var(--accent);
+        }
+        
+        .border-accent-color {
+            border-color: var(--accent);
+        }
+        
+        /* Card styling */
+        .theme-card {
+            background: rgba(26, 45, 13, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(75, 144, 23, 0.3);
+            border-radius: 16px;
+            transition: all 0.4s ease;
+        }
+        
+        .theme-card:hover {
+            border-color: rgba(127, 232, 48, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(18, 30, 8, 0.8);
+        }
+        
+        /* Button styling */
+        .theme-btn-primary {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            color: var(--background);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(127, 232, 48, 0.3);
+        }
+        
+        .theme-btn-secondary {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-btn-secondary:hover {
+            background-color: rgba(127, 232, 48, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        /* Skill tag styling */
+        .skill-tag {
+            background-color: rgba(75, 144, 23, 0.2);
+            color: var(--primary);
+            border: 1px solid rgba(75, 144, 23, 0.4);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .mobile-hidden {
+                display: none;
+            }
+            
+            .section {
+                height: auto;
+                min-height: 100vh;
+                padding: 80px 0;
+            }
+            
+            h1 {
+                font-size: 2.5rem !important;
+            }
+            
+            h2 {
+                font-size: 2rem !important;
+            }
+        }
+        
+        /* Form styling */
+        .theme-input {
+            background-color: rgba(26, 45, 13, 0.7);
+            border: 1px solid rgba(75, 144, 23, 0.4);
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+        
+        .theme-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(127, 232, 48, 0.2);
+            outline: none;
+        }
+        
+        .theme-input::placeholder {
+            color: rgba(232, 244, 223, 0.5);
+        }
+    </style>
+</head>
+<body class="text-[#e8f4df]">
+    <!-- Navigation Dots -->
+    <div class="fixed right-6 top-1/2 transform -translate-y-1/2 z-50 mobile-hidden">
+        <div class="flex flex-col items-center">
+            <div class="nav-dot active" data-section="0"></div>
+            <div class="nav-dot" data-section="1"></div>
+            <div class="nav-dot" data-section="2"></div>
+            <div class="nav-dot" data-section="3"></div>
+            <div class="nav-dot" data-section="4"></div>
+        </div>
+    </div>
+    
+    <!-- Mobile Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-[#0c1605] border-t border-[#1a2d0d] py-3 px-6 flex justify-between z-40 md:hidden">
+        <a href="#hero" class="flex flex-col items-center text-accent-color">
+            <i class="fas fa-home text-lg"></i>
+            <span class="text-xs mt-1">Home</span>
+        </a>
+        <a href="#about" class="flex flex-col items-center text-[#8ba87a]">
+            <i class="fas fa-user text-lg"></i>
+            <span class="text-xs mt-1">About</span>
+        </a>
+        <a href="#projects" class="flex flex-col items-center text-[#8ba87a]">
+            <i class="fas fa-code text-lg"></i>
+            <span class="text-xs mt-1">Projects</span>
+        </a>
+        <a href="#achievements" class="flex flex-col items-center text-[#8ba87a]">
+            <i class="fas fa-trophy text-lg"></i>
+            <span class="text-xs mt-1">Awards</span>
+        </a>
+        <a href="#contact" class="flex flex-col items-center text-[#8ba87a]">
+            <i class="fas fa-envelope text-lg"></i>
+            <span class="text-xs mt-1">Contact</span>
+        </a>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section id="hero" class="section gradient-bg flex flex-col justify-center items-center relative">
+        <div class="container mx-auto px-6 text-center relative z-10 fade-in">
+            <h1 class="text-5xl md:text-7xl font-bold mb-4">Fazli Rasyad</h1>
+            <p class="text-xl md:text-2xl mb-8 text-primary-color">Junior Tech Enthusiast</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#projects" class="theme-btn-primary px-8 py-3 rounded-lg shadow-lg">View My Work</a>
+                <a href="#contact" class="theme-btn-secondary px-8 py-3 rounded-lg">Get In Touch</a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2">
+            <a href="#about" class="text-accent-color animate-bounce">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </a>
+        </div>
+    </section>
+    
+    <!-- About Me Section -->
+    <section id="about" class="section gradient-bg-2 flex items-center">
+        <div class="container flex items-center justify-center mx-auto px-6 py-12">
+                <div class="lg:w-2/3 lg:pl-12 slide-in-right">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">About Me</h2>
+                    <p class="text-lg text-[#c5d9b8] mb-6">A Software Engineering student with a strong interest in cybersecurity and system-level technologies. Self-driven in learning, with a critical mindset that values understanding the “why” behind solutions, not just the “how.” Currently preparing to advance through higher education and real-world projects, with a focus on adaptability, growth, and long-term impact.</p>
+                    
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-semibold mb-4 text-primary-color">Skills & Technologies</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="skill-tag px-4 py-2 rounded-full">Laravel</span>
+                            <span class="skill-tag px-4 py-2 rounded-full">Tailwind CSS</span>
+                            <span class="skill-tag px-4 py-2 rounded-full">Internet of Things</span>
+                            <span class="skill-tag px-4 py-2 rounded-full">Cyber Security</span>
+                            <span class="skill-tag px-4 py-2 rounded-full">Linux</span>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="flex items-center theme-card p-4">
+                            <div class="bg-secondary-color p-3 rounded-lg mr-4">
+                                <i class="fas fa-universal-access text-[#121e08] text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">Accessibility First</h4>
+                                <p class="text-[#c5d9b8]">Building inclusive web experiences for all users.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center theme-card p-4">
+                            <div class="bg-secondary-color p-3 rounded-lg mr-4">
+                                <i class="fas fa-mobile-alt text-[#121e08] text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">Responsive Design</h4>
+                                <p class="text-[#c5d9b8]">Flawless performance across all device sizes.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Projects Section -->
+    <section id="projects" class="section gradient-bg-3 flex items-center">
+        <div class="container mx-auto px-6 py-12">
+            <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center">Featured Projects</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="theme-card p-6 fade-in">
+                    <div class="bg-secondary-color/20 h-48 rounded-lg mb-6 flex items-center justify-center">
+                        <i class="fas fa-shopping-cart text-5xl text-primary-color"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">E-Commerce Platform</h3>
+                    <p class="text-[#c5d9b8] mb-4">A full-featured online store built with PHP and Tailwind CSS. Features include cart management, payment, and admin dashboard.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">PHP</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">Tailwind CSS</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">MySQL</span>
+                    </div>
+                    <a href="https://github.com/farsy06/pcmeister" class="text-accent-color font-medium hover:underline inline-flex items-center">GitHub Repo <i class="fas fa-arrow-right ml-2"></i></a>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="theme-card p-6 fade-in">
+                    <div class="bg-secondary-color/20 h-48 rounded-lg mb-6 flex items-center justify-center">
+                        <i class="fas fa-chart-line text-5xl text-primary-color"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">HRMS</h3>
+                    <p class="text-[#c5d9b8] mb-4">Interactive Human Resource Management System with real-time charts and reporting tools. Built with Laravel API and React.js.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">Laravel</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">React.js</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">Vite</span>
+                    </div>
+                    <a href="https://github.com/FR156/PKL" class="text-accent-color font-medium hover:underline inline-flex items-center">GitHub Repo <i class="fas fa-arrow-right ml-2"></i></a>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="theme-card p-6 fade-in">
+                    <div class="bg-secondary-color/20 h-48 rounded-lg mb-6 flex items-center justify-center">
+                        <i class="fas fa-cloud text-5xl text-primary-color"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Secure Upload</h3>
+                    <p class="text-[#c5d9b8] mb-4">A modern cloud storage interface with advanced security features. Developed with Tailwind CSS, PHP, and MySQL.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">Tailwind CSS</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">PHP</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">MySQL</span>
+                    </div>
+                    <a href="https://github.com/FR156/SecureUp---rebuilt-from-VulnUp" class="text-accent-color font-medium hover:underline inline-flex items-center">GitHub Repo <i class="fas fa-arrow-right ml-2"></i></a>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="https://github.com/FR156/" class="theme-btn-primary px-8 py-3 rounded-lg shadow-lg">View All Projects</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Achievements Section -->
+    <section id="achievements" class="section gradient-bg-4 flex items-center">
+        <div class="container mx-auto px-6 py-12">
+            <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center">Achievements & Awards</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <!-- Achievement 1 -->
+                <div class="flex slide-in-left">
+                    <div class="bg-secondary-color p-4 rounded-xl mr-6 flex-shrink-0">
+                        <i class="fas fa-award text-[#121e08] text-3xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">DigiUp Certified UI/UX Designer</h3>
+                        <p class="text-[#c5d9b8] mb-3">Recognized as a DigiUp Certified UI/UX Designer for exceptional design skills.</p>
+                        <span class="text-accent-color font-medium">2024</span>
+                    </div>
+                </div>
+                
+                <!-- Achievement 2 -->
+                <div class="flex slide-in-right">
+                    <div class="bg-secondary-color p-4 rounded-xl mr-6 flex-shrink-0">
+                        <i class="fas fa-medal text-[#121e08] text-3xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">RPL SKKNI Certified</h3>
+                        <p class="text-[#c5d9b8] mb-3">Certificate of competency assessment in basic programming skills for RPL (Rekayasa Perangkat Lunak / Software Engineering).</p>
+                        <span class="text-accent-color font-medium">2024</span>
+                    </div>
+                </div>
+                
+                <!-- Achievement 3 -->
+                <div class="flex slide-in-left">
+                    <div class="bg-secondary-color p-4 rounded-xl mr-6 flex-shrink-0">
+                        <i class="fas fa-certificate text-[#121e08] text-3xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">LKSN Cyber Security Finalist</h3>
+                        <p class="text-[#c5d9b8] mb-3">Recognized as a finalist in the LKSN Cyber Security Competition for exceptional cybersecurity skills.</p>
+                        <span class="text-accent-color font-medium">2025</span>
+                    </div>
+                </div>
+                
+                <!-- Achievement 4 -->
+                <div class="flex slide-in-right">
+                    <div class="bg-secondary-color p-4 rounded-xl mr-6 flex-shrink-0">
+                        <i class="fas fa-trophy text-[#121e08] text-3xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">LKSN Medallion of Excellence</h3>
+                        <p class="text-[#c5d9b8] mb-3">Awarded the LKSN Medallion of Excellence for outstanding performance in cybersecurity.</p>
+                        <span class="text-accent-color font-medium">2025</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-16 theme-card p-8 text-center">
+                <h3 class="text-2xl font-bold mb-4">Let's Build Something Amazing Together</h3>
+                <p class="text-[#c5d9b8] mb-6 max-w-2xl mx-auto">I'm always open to discussing new opportunities and creative projects. Whether you have a question or just want to say hi, I'll get back to you as soon as possible.</p>
+                <a href="#contact" class="theme-btn-primary px-8 py-3 rounded-lg shadow-lg">Start a Conversation</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="section gradient-bg-5 flex items-center">
+        <div class="leaf-decoration" style="top: 15%; right: 10%; transform: rotate(45deg); scale: 1.2;"></div>
+        <div class="leaf-decoration" style="bottom: 10%; left: 5%; transform: rotate(-15deg);"></div>
+        
+        <div class="container mx-auto px-6 py-12">
+            <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center">Get In Touch</h2>
+            
+            <div class="flex flex-col lg:flex-row gap-12">
+                <div class="lg:w-1/2 fade-in">
+                    <h3 class="text-2xl font-bold mb-6">Let's Connect</h3>
+                    <p class="text-lg mb-8 text-[#c5d9b8]">I'm currently open to freelance opportunities, interesting project collaborations, and full-time positions. Feel free to reach out if you'd like to work together or just say hello!</p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-center theme-card p-4">
+                            <div class="bg-secondary-color p-3 rounded-lg mr-4">
+                                <i class="fas fa-envelope text-[#121e08] text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Email</h4>
+                                <a href="mailto:fazlirasyad@proton.me" class="text-primary-color hover:text-accent-color">fazlirasyad@proton.me</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center theme-card p-4">
+                            <div class="bg-secondary-color p-3 rounded-lg mr-4">
+                                <i class="fas fa-phone-alt text-[#121e08] text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Phone</h4>
+                                <a href="tel:+" class="text-primary-color hover:text-accent-color"></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-10">
+                        <h4 class="text-xl font-bold mb-4">Find me online</h4>
+                        <div class="flex space-x-4">
+                            <a href="https://github.com/FR156/" class="theme-card hover:border-accent-color p-4 transition duration-300">
+                                <i class="fab fa-github text-primary-color text-xl"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/fazli-rasyad/" class="theme-card hover:border-accent-color p-4 transition duration-300">
+                                <i class="fab fa-linkedin text-primary-color text-xl"></i>
+                            </a>
+                            <a href="#" class="theme-card hover:border-accent-color p-4 transition duration-300">
+                                <i class="fab fa-instagram text-primary-color text-xl"></i>
+                            </a>
+                            <a href="#" class="theme-card hover:border-accent-color p-4 transition duration-300">
+                                <i class="fab fa-reddit text-primary-color text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 pt-8 border-t border-[#1a2d0d] text-center text-[#8ba87a]">
+                <p>© 2026 Fazli Rasyad. All rights reserved.</p>
+            </div>
+        </div>
+    </section>
+    
+    <script>
+        // Intersection Observer for scroll animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation elements
+            const fadeElements = document.querySelectorAll('.fade-in');
+            const slideLeftElements = document.querySelectorAll('.slide-in-left');
+            const slideRightElements = document.querySelectorAll('.slide-in-right');
+            
+            // Create intersection observer
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+            
+            // Observe all animation elements
+            fadeElements.forEach(el => observer.observe(el));
+            slideLeftElements.forEach(el => observer.observe(el));
+            slideRightElements.forEach(el => observer.observe(el));
+            
+            // Navigation dots functionality
+            const sections = document.querySelectorAll('.section');
+            const navDots = document.querySelectorAll('.nav-dot');
+            const mobileNavLinks = document.querySelectorAll('nav a');
+            
+            // Update active nav dot based on scroll position
+            function updateActiveNavDot() {
+                let currentSectionIndex = 0;
+                const scrollPosition = window.scrollY + window.innerHeight / 2;
+                
+                sections.forEach((section, index) => {
+                    const sectionTop = section.offsetTop;
+                    const sectionBottom = sectionTop + section.offsetHeight;
+                    
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                        currentSectionIndex = index;
+                    }
+                });
+                
+                // Update nav dots
+                navDots.forEach((dot, index) => {
+                    if (index === currentSectionIndex) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+                
+                // Update mobile nav links
+                mobileNavLinks.forEach((link, index) => {
+                    if (index === currentSectionIndex) {
+                        link.classList.remove('text-[#8ba87a]');
+                        link.classList.add('text-accent-color');
+                    } else {
+                        link.classList.remove('text-accent-color');
+                        link.classList.add('text-[#8ba87a]');
+                    }
+                });
+            }
+            
+            // Scroll to section when nav dot is clicked
+            navDots.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    const sectionIndex = parseInt(this.getAttribute('data-section'));
+                    sections[sectionIndex].scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+            
+            // Handle mobile navigation
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+                    
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+            
+            // Update nav on scroll
+            window.addEventListener('scroll', updateActiveNavDot);
+            updateActiveNavDot(); // Initial call
+            
+            // Form submission handler
+            const contactForm = document.querySelector('form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Simple validation
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+                    const message = document.getElementById('message').value;
+                    
+                    if (name && email && message) {
+                        // In a real implementation, you would send the form data to a server
+                        alert('Thank you for your message! I will get back to you soon.');
+                        contactForm.reset();
+                    } else {
+                        alert('Please fill in all fields before submitting.');
+                    }
+                });
+            }
+            
+            // Add leaf decorations to each section
+            const sectionsArray = Array.from(sections);
+            sectionsArray.forEach((section, index) => {
+                if (index !== 0 && index !== 4) { // Don't add to hero and contact (already have them)
+                    for (let i = 0; i < 2; i++) {
+                        const leaf = document.createElement('div');
+                        leaf.className = 'leaf-decoration mobile-hidden';
+                        
+                        // Random positioning
+                        const top = Math.random() * 80 + 10;
+                        const left = Math.random() * 80 + 10;
+                        const rotation = Math.random() * 60 - 30;
+                        const scale = Math.random() * 0.5 + 0.5;
+                        
+                        leaf.style.top = `${top}%`;
+                        leaf.style.left = `${left}%`;
+                        leaf.style.transform = `rotate(${rotation}deg) scale(${scale})`;
+                        leaf.style.opacity = '0.05';
+                        
+                        section.appendChild(leaf);
+                    }
+                }
+            });
+            
+            // Initialize animations for elements in view on page load
+            const checkElementsInView = () => {
+                fadeElements.forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.bottom > 0) {
+                        el.classList.add('visible');
+                    }
+                });
+                
+                slideLeftElements.forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.bottom > 0) {
+                        el.classList.add('visible');
+                    }
+                });
+                
+                slideRightElements.forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.bottom > 0) {
+                        el.classList.add('visible');
+                    }
+                });
+            };
+            
+            // Check for elements in view on page load
+            setTimeout(checkElementsInView, 100);
+        });
+    </script>
+</body>
+</html>
